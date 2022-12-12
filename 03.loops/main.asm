@@ -1,4 +1,5 @@
-; initialize data segment
+; nasm -f elf64 main.asm && ld  main.o -o  main && ./main
+
 segment .data
     msg db 'hello', 10    
     msg_len equ $ - msg          ; define msg as byte, and set its value to 'hello'
@@ -14,18 +15,25 @@ segment .text
 ; _start function - entry point for the program
 _start:
 
-    MOV	CL, 10
-    L1:
+    MOV    CL, 10
+    jz exit
+    call    printloop
+
+
+exit:
+
+
+printloop:
     mov rdi, 1          ; specify file descriptor for standard output
     lea rsi, [msg]      ; load address of msg into ecx
     mov rdx, msg_len    ; specify length of data to be written
     mov rax, SYS_write  ; specify syscall number for write
+    push rcx            ; takes the value of rcx and stores it temporarily in esp
     syscall    ;syscall 
-    loop L1
-    DEC	CL
-    JNZ	L1
+    pop rcx             ; takes the value of esp and puts it in rcx
+    dec CL
+    jnz printloop
     mov eax, 1
     mov rax, exit_code
     mov rsi, exit_call
     syscall 
-    
