@@ -15,7 +15,7 @@ segment .text
 ; _start function - entry point for the program
 _start:
 
-    MOV    CL, 10
+    MOV    CL, 10       ; set loop counter to 10
     jz exit
     call    printloop
 
