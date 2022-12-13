@@ -1,3 +1,6 @@
+; nasm -f elf64 main.asm && ld  main.o -o  main && ./main
+
+
 ; x86 assembly program template for Linux
 
 ; initialize data segment
