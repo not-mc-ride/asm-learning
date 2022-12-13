@@ -16,8 +16,8 @@ segment .text
 _start:
 
     MOV    CL, 10       ; set loop counter to 10
-    jz exit
-    call    printloop
+    jz exit             ; jump to exit if CL is equal to 0
+    call    printloop   ; call loop
 
 
 exit:
@@ -31,8 +31,8 @@ printloop:
     push rcx            ; takes the value of rcx and stores it temporarily in esp
     syscall    ;syscall 
     pop rcx             ; takes the value of esp and puts it in rcx
-    dec CL
-    jnz printloop
+    dec CL              ; substract one from CL
+    jnz printloop       ; jmp to printloop if CL is not equal to 0
     mov eax, 1
     mov rax, exit_code
     mov rsi, exit_call
