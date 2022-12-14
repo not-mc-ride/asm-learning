@@ -19,26 +19,26 @@ segment .text
 ; _start function - entry point for the program
 _start:
     
-    push msg
+    push msg               ; send msg to the top of the stack
     push msg_len
     call print
     push msg2
     push msg2_len
-    call print
-    call exit
-exit:
+    call print             ; call print function after pudhing both the message and the message length
+    call exit              ; call exit function at the end of the program
+exit:                      ; create exit function modtly for cleaner code
     mov rax, exit_code
     mov rsi, exit_call
     syscall  
 
-print:                      ;define a print function 
-    pop rax 
-    mov [retadr], rax            
+print:                      ; define a print function 
+    pop rax                 ; pop the return address to rax
+    mov [retadr], rax       ; move the return address to a variable, since i use rax later in the function     
     mov rdi, 1
     pop rdx
     pop rsi 
     mov rax, SYS_write
     syscall
     mov rax, [retadr]
-    push rax
-    ret
+    push rax                ; push rax to the top of the stack, since thats what ret uses to know where to return
+    ret                     ; return to main loop
