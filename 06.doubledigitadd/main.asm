@@ -1,7 +1,7 @@
 ; initialize data segment
 segment .data
-    num1 db 2
-    num2 db 1
+    num1 db 10
+    num2 db 10
     msg db "hell"
     msg_len equ $ - msg
     exit_code equ 60
@@ -17,22 +17,27 @@ segment .text
 
 ; _start function - entry point for the program
 _start:
-    mov dx, [num1]
-    add dx, [num2]
-    
-    
-    mov rax, dx   ; move the value in dx into rax
+    mov rax, [num1]      ; move num1 to dx register
+    add rax, [num2]      ; add num2 to dx register
     mov rbx, 10   ; set rbx to the divisor
     idiv rbx      ; rax is now divided by rbx
-    mov dx, rax   ; move the quotient back into dx
-    
-    add dx, 48
-    mov [result], dx
+
+    ;add rax, 48
+
+    mov [result], rax
     call print
     
     mov rax, exit_code
     mov rsi, exit_call
     syscall  
+    
+print:
+    mov rdi, 1          ; specify file descriptor for standard output
+    lea rsi, [result]         ; load address of msg into ecx
+    mov rdx, 2    ; specify length of data to be written
+    mov rax, SYS_write  ; specify syscall number for write
+    syscall
+    ret
     
 print:
     mov rdi, 1          ; specify file descriptor for standard output
